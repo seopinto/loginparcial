@@ -9,24 +9,28 @@
         private $email = null;
         private $password = null;
         private $id_rol = null;
+        private $ubication = null;
         
 
 
-        public function _construct(){ // O usar Public function __construct(){
-            $this->id_user = '1';
-            $this->name = 'vacio';
-            $this->lastname = 'vacio';
-            $this->document = 'vacio';
-            $this->type_document = 'vacio';
-            $this->email = 'vacio';
-            $this->contrasena = 'vacio';
-            $this->rol='vacio';
-            
-    
+        public function __construct($ID){
+            include ('config/config.php');
+
+            $sql = 'SELECT * FROM users WHERE id_user = "'.$ID.'"';
+            $res = $mysql->query($sql);
+
+            while($row = $res->fetch_row()){
+                $this->id_user = $row[0];
+                $this->name = $row[1];
+            }
         }
 
         public function getId(){
             return $this->id_user;
+        }
+
+        public function getName(){
+            return $this->name;
         }
 
         public function setId($pId){

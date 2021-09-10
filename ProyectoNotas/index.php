@@ -73,30 +73,42 @@ Usuario y/o contrasena, INVALIDOS
     
         if($document != null && $password != null){
                     
-            $sqlUser = 'SELECT id_user, name, lastname, document, type_document, email, password, name_rol  FROM users u inner join db_pe.rol r on (u.id_rol = r.id_rol) WHERE document="'.$document.'" AND password="'.$password.'"';
+            $sqlUser = 'SELECT id_user FROM users WHERE document = "'.$document.'" AND password = "'.$password.'"';
             $resUser = $mysql->query($sqlUser);
-           
+            //var_dump($resUser);
                                 
-            if($resUser->num_rows > 0){
-               // var_dump($resUser);
-                $arregloUser = array();
-                foreach($resUser as $key => $value){
-                        $arregloUser[] = array( 
-                            'name'=>$value->name,
-                             'rol'=>$value->name_rol
-                        );
-                    
+            if($resUser->num_rows === 1){
+
+                $row = $resUser->fetch_row();
+
+                $usuario = new usuario($row[0]);
+
+                echo 'User = '.$usuario->getName();
+
+                /*
+                if($rol == 1){
+                    //VA a rol 1
+                }else{
+                    if($rol == 2){
+                        //VA a rol 2
+                    }else{
+                        if($rol == 3){
+                            //VA a rol 3
+                        }else{
+                            if
+                        }
+                    }
                 }
-             $_SESSION['id_Login'] = $document['document'];
-               //$_SESSION['id_rol'] = $resUser['name'];
-               header("Location:cuenta.php");
-                 var_dump($arregloUser);
+                /*
+                /*$_SESSION['id_Login'] = $document['document'];
+                $_SESSION['id_rol'] = $resUser['name'];*/
+
+                header("Location:".$usuario->getSesion()."");
+
             }else{
                 echo "<script type='text/javascript'>showalert();</script>";
             }
-
         }
-
     } 
 
     
